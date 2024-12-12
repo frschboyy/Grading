@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Assignment - Student Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f3f4f6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            background-color: #f9fafb;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Upload Zone Styles */
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color);
+            background-color: #f8fafc;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* File List Styles */
+        .file-list {
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Submission Guidelines */
+        .guidelines-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .guidelines-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .guidelines-list li:before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Submission History */
+        .history-list {
+            list-style: none;
+        }
+
+        .history-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>Submit Assignment</h1>
+            <button class="btn btn-secondary">Back to Dashboard</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Main Submission Form -->
+        <div class="main-content">
+            <!-- Assignment Details -->
+            <div class="card">
+                <h2 class="card-title">Assignment Details</h2>
+                <div class="form-group">
+                    <div class="form-label">Assignment Title</div>
+                    <div id="assignmentName" th:text="${title}"></div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Description</div>
+                    <div id="assignmentDescription" th:text="${description}"></div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Due Date</div>
+                    <div id="dueDate" th:text="${dueDate}"></div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Status</div>
+                    <div>Open for Submission</div>
+                </div>
+            </div>
+
+            <!-- File Upload -->
+            <div class="card">
+                <h2 class="card-title">Upload Files</h2>
+                <div class="upload-zone" onclick="triggerFileInput()">
+                    <div class="upload-icon">📁</div>
+                    <p>Drag and drop your files here</p>
+                    <p>or</p>
+                    <button class="btn btn-primary">Browse Files</button>
+                    <input type="file" id="fileInput" hidden multiple accept=".pdf,.doc,.docx" onchange="handleFileUpload(event)">
+                </div>
+
+                <div class="file-list" id="fileList"></div>
+
+                <!-- Submit Button -->
+                <button class="btn btn-primary" onclick="submitFiles()">Submit Assignment</button>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Submission Guidelines -->
+            <div class="card">
+                <h2 class="card-title">Submission Guidelines</h2>
+                <ul class="guidelines-list">
+                    <li>File format: PDF, DOC, or DOCX only</li>
+                    <li>Maximum file size: 10MB</li>
+                    <li>Include your student ID in the filename</li>
+                    <li>One submission allowed per assignment</li>
+                    <li>Late submissions may incur penalties</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Handle file input trigger
+        function triggerFileInput() {
+            document.getElementById("fileInput").click();
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // Clear the existing list
+            const allowedExtensions = ['pdf', 'doc', 'docx'];
+
+            Array.from(event.target.files).forEach(file => {
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert(`File type not allowed: ${file.name}`);
+                    return;
+                }
+                
+                const fileItem = document.createElement("div");
+                fileItem.classList.add("file-item");
+
+                const fileInfo = document.createElement("div");
+                fileInfo.classList.add("file-info");
+                fileInfo.innerHTML = `<span>📄</span><span>${file.name}</span><span>(${(file.size / (1024 * 1024)).toFixed(2)} MB)</span>`;
+
+                const removeButton = document.createElement("button");
+                removeButton.classList.add("btn", "btn-secondary");
+                removeButton.textContent = "Remove";
+                removeButton.onclick = () => fileItem.remove();
+
+                fileItem.appendChild(fileInfo);
+                fileItem.appendChild(removeButton);
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // Handle file submission
+        function submitFiles() {
+            const fileInput = document.getElementById("fileInput");
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                alert("Please upload at least one file before submitting.");
+                return;
+            }
+
+            // Simulate file upload
+            const formData = new FormData();
+            Array.from(files).forEach(file => {
+                formData.append("files[]", file);
+            });
+
+            fetch("/submission", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Handle server rejection or error
+                    return response.json().then(data => {
+                        alert("Error: " + (data.message || "Failed to upload file. Please try again."));
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert("Files uploaded successfully!");
+                    // Clear the file list
+                    fileInput.value = "";
+                    document.getElementById("fileList").innerHTML = "";
+                    navigateToDashboard();
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                alert("Network or server error: " + error);
+            });
+        }
+        
+        // Back to Dashboard navigation (dummy function for demonstration)
+        function navigateToDashboard() {
+            alert("Navigate to dashboard.");
+        }
+    </script>
+</body>
+</html>
